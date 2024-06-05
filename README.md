@@ -43,3 +43,10 @@ When designing your classes and database schemas (in the later stages), make sur
 Utilize Python’s uuid module to generate UUID4 ids.
 
 Leverage Python’s datetime module to record timestamps for creation and updates.
+
+<br>
+
+![alt text](<./pictures/UML_class.jpeg>)
+
+
+<br>
