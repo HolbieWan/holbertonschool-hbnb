@@ -1,6 +1,6 @@
 from .base_model import BaseModel
 
-@abstact_class
+#@abstact_class
 class Place(BaseModel):
     def __init__(self, name, description, address, city_id, latitude, longitude, host_id, num_rooms, num_bathrooms, price_per_night, max_guests):
         super().__init__()
