@@ -28,6 +28,30 @@ class TestCity(unittest.TestCase):
         city = City("Rome", "IT")
         self.assertIsInstance(city.country_id, str)
 
+    def test_city_name_empty_string(self):
+        city = City("", "US")
+        self.assertEqual(city.name, "")
+
+    def test_city_country_id_empty_string(self):
+        city = City("New York", "")
+        self.assertEqual(city.country_id, "")
+
+    def test_city_name_contains_special_characters(self):
+        city = City("San Francisco!", "US")
+        self.assertEqual(city.name, "San Francisco!")
+
+    def test_city_country_id_contains_special_characters(self):
+        city = City("New York", "US!")
+        self.assertEqual(city.country_id, "US!")
+
+    def test_city_name_with_whitespace(self):
+        city = City("   Los Angeles   ", "US")
+        self.assertEqual(city.name, "   Los Angeles   ")
+
+    def test_city_country_id_with_whitespace(self):
+        city = City("New York", "   US   ")
+        self.assertEqual(city.country_id, "   US   ")
+
 
 if __name__ == '__main__':
     unittest.main()

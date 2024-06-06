@@ -41,6 +41,16 @@ class TestAmenity(unittest.TestCase):
         self.amenity.updated_at = new_updated_at
         self.assertEqual(self.amenity.updated_at, new_updated_at)
 
+    def test_get_name(self):
+        print("Testing get_name method...")
+        self.assertEqual(self.amenity.get_name(), self.name)
+
+    def test_set_name(self):
+        print("Testing set_name method...")
+        new_name = "Tennis Court"
+        self.amenity.set_name(new_name)
+        self.assertEqual(self.amenity.get_name(), new_name)
+
 
 if __name__ == '__main__':
     unittest.main()
