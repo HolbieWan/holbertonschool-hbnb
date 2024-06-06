@@ -7,6 +7,7 @@ from models.city import City
 from models.country import Country
 from .ipersistence_manager import IPersistenceManager
 
+
 class DataManager(IPersistenceManager):
     def __init__(self, storage_file):
         self.storage_file = storage_file
@@ -28,7 +29,7 @@ class DataManager(IPersistenceManager):
         if entity_type not in self.data:
             self.data[entity_type] = {}
         self.data[entity_type][entity.id] = entity.__dict__
-        self._save_data()
+        self.save_data()
 
     def get(self, entity_id, entity_type):
         return self.data.get(entity_type, {}).get(entity_id)

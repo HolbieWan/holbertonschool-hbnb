@@ -1,6 +1,4 @@
-from .base_model import BaseModel
-
-class Country(BaseModel):
+class Country:
     def __init__(self, name, code):
         super().__init__()
         self.name = name
