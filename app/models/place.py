@@ -18,7 +18,7 @@ class Place(BaseModel):
         self.price_per_night = price_per_night
         self.max_guests = max_guests
 
-
+"""
 class House(Place):
     def __init__(self, name, description, address, city_id, latitude, longitude, host_id, nb_rooms, nb_bathrooms, price_per_night, max_guests, amenities, reviews, house_rules):
         super().__init__(name, description, address, city_id, latitude, longitude,
@@ -44,3 +44,4 @@ class Room(Place):
         self.amenities = amenities
         self.reviews = reviews
         self.room_rules = room_rules
+"""
