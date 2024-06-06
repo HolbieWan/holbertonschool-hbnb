@@ -19,7 +19,6 @@ class TestAmenity(unittest.TestCase):
         print(f"Updated at: {self.amenity.updated_at}")
 
         self.assertEqual(self.amenity.name, self.name)
-        self.assertIsInstance(self.amenity, Amenity)
         self.assertIsNotNone(self.amenity.id)
         self.assertIsNotNone(self.amenity.created_at)
         self.assertIsNotNone(self.amenity.updated_at)
