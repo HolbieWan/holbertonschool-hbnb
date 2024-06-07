@@ -16,12 +16,26 @@ class TestPlace(unittest.TestCase):
         self.number_bathrooms = 1
         self.price_by_night = 100
         self.max_guests = 10
-        self.place = Place(self.name, self.description, self.address, self.city_id, self.latitude, self.longitude, self.host_id, self.number_rooms, self.number_bathrooms, self.price_by_night, self.max_guests)
+        self.place = Place(
+            self.name,
+            self.description,
+            self.address,
+            self.city_id,
+            self.latitude,
+            self.longitude,
+            self.host_id,
+            self.number_rooms,
+            self.number_bathrooms,
+            self.price_by_night,
+            self.max_guests)
 
     def test_user_attributes(self):
-        place = Place("Cédric", "A beautiful place to stay in Nantes.", "Rue de la Paix", "0001", 37.773972, -122.431297, "0001", 2, 1, 4, 100, 10)
+        place = Place("Cédric", "A beautiful place to stay in Nantes.",
+                      "Rue de la Paix", "0001", 37.773972, -122.431297, "0001", 2, 1, 100, 10)
         self.assertEqual(place.name, "Cédric")
-        self.assertEqual(place.description, "A beautiful place to stay in Nantes.")
+        self.assertEqual(
+            place.description,
+            "A beautiful place to stay in Nantes.")
         self.assertEqual(place.address, "Rue de la Paix")
         self.assertEqual(place.city_id, "0001")
         self.assertEqual(place.latitude, 37.773972)
@@ -29,25 +43,32 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(place.host_id, "0001")
         self.assertEqual(place.num_rooms, 2)
         self.assertEqual(place.num_bathrooms, 1)
-        self.assertEqual(place.max_guests, 4)
         self.assertEqual(place.price_per_night, 100)
         self.assertEqual(place.max_guests, 10)
-
 
     def test_init(self):
         print("Testing init method...")
         print(f"Expected name: {self.name}, Actual name: {self.place.name}")
-        print(f"Expected description: {self.description}, Actual description: {self.place.description}")
-        print(f"Expected address: {self.address}, Actual address: {self.place.address}")
-        print(f"Expected city_id: {self.city_id}, Actual city_id: {self.place.city_id}")
-        print(f"Expected latitude: {self.latitude}, Actual latitude: {self.place.latitude}")
-        print(f"Expected longitude: {self.longitude}, Actual longitude: {self.place.longitude}")
-        print(f"Expected host_id: {self.host_id}, Actual host_id: {self.place.host_id}")
-        print(f"Expected number_rooms: {self.number_rooms}, Actual number_rooms: {self.place.num_rooms}")
-        print(f"Expected number_bathrooms: {self.number_bathrooms}, Actual number_bathrooms: {self.place.num_bathrooms}")
-        print(f"Expected max_guest: {self.max_guest}, Actual max_guest: {self.place.max_guests}")
-        print(f"Expected price_by_night: {self.price_by_night}, Actual price_by_night: {self.place.price_per_night}")
-        print(f"Expected max_guests: {self.max_guests}, Actual max_guests: {self.place.max_guests}")
+        print(
+            f"Expected description: {self.description}, Actual description: {self.place.description}")
+        print(
+            f"Expected address: {self.address}, Actual address: {self.place.address}")
+        print(
+            f"Expected city_id: {self.city_id}, Actual city_id: {self.place.city_id}")
+        print(
+            f"Expected latitude: {self.latitude}, Actual latitude: {self.place.latitude}")
+        print(
+            f"Expected longitude: {self.longitude}, Actual longitude: {self.place.longitude}")
+        print(
+            f"Expected host_id: {self.host_id}, Actual host_id: {self.place.host_id}")
+        print(
+            f"Expected number_rooms: {self.number_rooms}, Actual number_rooms: {self.place.num_rooms}")
+        print(
+            f"Expected number_bathrooms: {self.number_bathrooms}, Actual number_bathrooms: {self.place.num_bathrooms}")
+        print(
+            f"Expected price_by_night: {self.price_by_night}, Actual price_by_night: {self.place.price_per_night}")
+        print(
+            f"Expected max_guests: {self.max_guests}, Actual max_guests: {self.place.max_guests}")
         self.assertEqual(self.place.name, self.name)
         self.assertEqual(self.place.description, self.description)
         self.assertEqual(self.place.address, self.address)
@@ -57,7 +78,6 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(self.place.host_id, self.host_id)
         self.assertEqual(self.place.num_rooms, self.number_rooms)
         self.assertEqual(self.place.num_bathrooms, self.number_bathrooms)
-        self.assertEqual(self.place.max_guests, self.max_guest)
         self.assertEqual(self.place.price_per_night, self.price_by_night)
         self.assertEqual(self.place.max_guests, self.max_guests)
         self.assertIsInstance(self.place, BaseModel)
@@ -97,9 +117,8 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(self.place.host_id, new_host_id)
         self.assertEqual(self.place.num_rooms, new_number_rooms)
         self.assertEqual(self.place.num_bathrooms, new_number_bathrooms)
-        self.assertEqual(self.place.max_guests, new_max_guest)
         self.assertEqual(self.place.price_per_night, new_price_by_night)
         self.assertEqual(self.place.max_guests, new_max_guests)
 
     def tearDown(self):
-        del self.place     
+        del self.place

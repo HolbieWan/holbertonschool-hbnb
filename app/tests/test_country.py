@@ -3,6 +3,7 @@ from models.country import Country
 from models.base_model import BaseModel
 from datetime import datetime
 
+
 class TestCountry(unittest.TestCase):
     def test_country_attributes(self):
         country = Country("United States", "US")
