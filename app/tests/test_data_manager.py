@@ -93,6 +93,7 @@ class TestDataManager(unittest.TestCase):
     def test_update_non_existing_entity(self):
         self.data_manager.data = {'entity': {}}
         new_entity = Entity('1', 'New Name')
+        self.data_manager.update(new_entity)
 
     def test_delete_existing_entity(self):
         self.data_manager.data = {'entity': {'1': {'id': '1', 'name': 'John Doe'}}}

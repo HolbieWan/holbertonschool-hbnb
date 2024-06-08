@@ -5,7 +5,7 @@ from models.base_model import BaseModel
 
 class TestPlace(unittest.TestCase):
     def setUp(self):
-        self.name = "Cédric"
+        self.name = "Nantes"
         self.description = "A beautiful place to stay in Nantes."
         self.address = "Rue de la Paix"
         self.city_id = "0001"
@@ -33,9 +33,7 @@ class TestPlace(unittest.TestCase):
         place = Place("Cédric", "A beautiful place to stay in Nantes.",
                       "Rue de la Paix", "0001", 37.773972, -122.431297, "0001", 2, 1, 100, 10)
         self.assertEqual(place.name, "Cédric")
-        self.assertEqual(
-            place.description,
-            "A beautiful place to stay in Nantes.")
+        self.assertEqual(place.description,"A beautiful place to stay in Nantes.")
         self.assertEqual(place.address, "Rue de la Paix")
         self.assertEqual(place.city_id, "0001")
         self.assertEqual(place.latitude, 37.773972)
@@ -118,6 +116,116 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(self.place.num_rooms, new_number_rooms)
         self.assertEqual(self.place.num_bathrooms, new_number_bathrooms)
         self.assertEqual(self.place.price_per_night, new_price_by_night)
+        self.assertEqual(self.place.max_guests, new_max_guests)
+
+    def test_get_name(self):
+        print("Testing get_name method...")
+        self.assertEqual(self.place.get_name(self.name), self.name)
+
+    def test_set_name(self):
+        print("Testing set_name method...")
+        new_name = "Jean"
+        self.place.set_name(new_name)
+        self.assertEqual(self.place.name, new_name)
+    
+    def test_get_description(self):
+        print("Testing get_description method...")
+        self.assertEqual(self.place.get_description(self.description), self.description)
+
+    def test_set_description(self):
+        print("Testing set_description method...")
+        new_description = "A beautiful place to stay in Paris."
+        self.place.set_description(new_description)
+        self.assertEqual(self.place.description, new_description)
+
+    def test_get_address(self):
+        print("Testing get_address method...")
+        self.assertEqual(self.place.get_address(self.address), self.address)
+
+    def test_set_address(self):
+        print("Testing set_address method...")
+        new_address = "Rue de la Liberté"
+        self.place.set_address(new_address)
+        self.assertEqual(self.place.address, new_address)
+
+    def test_get_city_id(self):
+        print("Testing get_city_id method...")
+        self.assertEqual(self.place.get_city_id(self.city_id), self.city_id)
+
+    def test_set_city_id(self):
+        print("Testing set_city_id method...")
+        new_city_id = "0002"
+        self.place.set_city_id(new_city_id)
+        self.assertEqual(self.place.city_id, new_city_id)
+
+    def test_get_latitude(self):
+        print("Testing get_latitude method...")
+        self.assertEqual(self.place.get_latitude(self.latitude), self.latitude)
+
+    def test_set_latitude(self):
+        print("Testing set_latitude method...")
+        new_latitude = 48.8566
+        self.place.set_latitude(new_latitude)
+        self.assertEqual(self.place.latitude, new_latitude)
+
+    def test_get_longitude(self):
+        print("Testing get_longitude method...")
+        self.assertEqual(self.place.get_longitude(self.longitude), self.longitude)
+
+    def test_set_longitude(self):
+        print("Testing set_longitude method...")
+        new_longitude = 2.3522
+        self.place.set_longitude(new_longitude)
+        self.assertEqual(self.place.longitude, new_longitude)
+
+    def test_get_host_id(self):
+        print("Testing get_host_id method...")
+        self.assertEqual(self.place.get_host_id(self.host_id), self.host_id)
+
+    def test_set_host_id(self):
+        print("Testing set_host_id method...")
+        new_host_id = "0002"
+        self.place.set_host_id(new_host_id)
+        self.assertEqual(self.place.host_id, new_host_id)
+
+    def test_get_num_rooms(self):
+        print("Testing get_num_rooms method...")
+        self.assertEqual(self.place.get_num_rooms(self.number_rooms), self.number_rooms)
+
+    def test_set_num_rooms(self):
+        print("Testing set_num_rooms method...")
+        new_number_rooms = 3
+        self.place.set_num_rooms(new_number_rooms)
+        self.assertEqual(self.place.num_rooms, new_number_rooms)
+
+    def test_get_num_bathrooms(self):
+        print("Testing get_num_bathrooms method...")
+        self.assertEqual(self.place.get_num_bathrooms(self.number_bathrooms), self.number_bathrooms)
+
+    def test_set_num_bathrooms(self):
+        print("Testing set_num_bathrooms method...")
+        new_number_bathrooms = 2
+        self.place.set_num_bathrooms(new_number_bathrooms)
+        self.assertEqual(self.place.num_bathrooms, new_number_bathrooms)
+
+    def test_get_price_per_night(self):
+        print("Testing get_price_per_night method...")
+        self.assertEqual(self.place.get_price_per_night(self.price_by_night), self.price_by_night)
+
+    def test_set_price_per_night(self):
+        print("Testing set_price_per_night method...")
+        new_price_by_night = 200
+        self.place.set_price_per_night(new_price_by_night)
+        self.assertEqual(self.place.price_per_night, new_price_by_night)
+
+    def test_get_max_guests(self):
+        print("Testing get_max_guests method...")
+        self.assertEqual(self.place.get_max_guests(self.max_guests), self.max_guests)
+
+    def test_set_max_guests(self):
+        print("Testing set_max_guests method...")
+        new_max_guests = 12
+        self.place.set_max_guests(new_max_guests)
         self.assertEqual(self.place.max_guests, new_max_guests)
 
     def tearDown(self):
