@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
-import uuid
 from email_validator import validate_email, EmailNotValidError
 from datetime import datetime
+from models.user import User
 
 
 app = Flask(__name__)
@@ -16,6 +16,7 @@ def home():
 
 @app.route("/users", methods=["POST"])
 def add_user():
+
     user_data = request.get_json()
     email = user_data.get("email")
 
@@ -30,26 +31,30 @@ def add_user():
     if not all([email, first_name, last_name]):
         return jsonify({"error": "first name, last name and email are required"}), 400
 
-    user_id = str(uuid.uuid4())
+    new_user = User(email, first_name, last_name)
+    users[new_user.id] = new_user.to_dict()
 
-    user_data["id"] = user_id
-    user_data["created_at"] = datetime.now().isoformat()
-    user_data["updated_at"] = user_data["created_at"]
-
-    users[user_id] = user_data
     return jsonify({
         "message": "User added",
-        "user": user_data
+        "user": new_user.to_dict()
     }), 201
 
 
 @app.route("/users", methods=["GET"])
 def get_users():
-    users_list = list(users.keys())
-    return jsonify(users_list)
+    users_list = []
+    for user in users.values():
+        user_data = {
+            "email": user["email"],
+            "first_name": user["first_name"],
+            "last_name": user["last_name"]
+        }
+        users_list.append(user_data)
+
+        return jsonify(users_list)
 
 
-@app.route("/users/<user_id>", methods=["GET"])
+@ app.route("/users/<user_id>", methods=["GET"])
 def get_user(user_id):
 
     user = users.get(user_id)
@@ -60,7 +65,7 @@ def get_user(user_id):
         return jsonify({"error": "User not found"}), 404
 
 
-@app.route("/users/<user_id>", methods=["PUT"])
+@ app.route("/users/<user_id>", methods=["PUT"])
 def update_user(user_id):
 
     user_data = request.get_json()
@@ -89,7 +94,7 @@ def update_user(user_id):
     })
 
 
-@app.route("/users/<user_id>", methods=["DELETE"])
+@ app.route("/users/<user_id>", methods=["DELETE"])
 def delete_user(user_id):
 
     if user_id not in users:

@@ -8,6 +8,13 @@ class BaseModel:
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }
+
     def save(self):  # a tester avec created_at ou saved_at
         self.created_at = datetime.now()
         # Logic to save the object to the persistence layer
