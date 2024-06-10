@@ -1,52 +1,42 @@
 import json
-from .ipersistence_manager import IPersistenceManager
-
+from app.persistence.ipersistence_manager import IPersistenceManager
 
 class DataManager(IPersistenceManager):
-    def __init__(self, storage_file):
-        self.storage_file = storage_file
-        self.data = self.load_data()
-
-
-    def load_data(self):
-        try:
-            with open(self.storage_file, 'r', newline='') as f:
-                return json.load(f)
-        except FileNotFoundError:
-            return {}
-
-
-    def save_data(self):
-        with open(self.storage_file, 'w') as f:
-            json.dump(self.data, f)
-
+    def __init__(self):
+        self.storage = {}
 
     def save(self, entity):
-        entity_type = type(entity).__name__.lower()
-        if entity_type not in self.data:
-            self.data[entity_type] = {}
-        self.data[entity_type][entity.id] = entity.__dict__
-        self.save_data()
-
+        entity_type = type(entity).__name__
+        if entity_type not in self.storage:
+            self.storage[entity_type] = {}
+        self.storage[entity_type][entity.id] = entity
+        return entity
 
     def get(self, entity_id, entity_type):
-        return self.data.get(entity_type, {}).get(entity_id)
-    
-
-    def get_all(self, entity_type):
-        return self.data.get(entity_type, {}).values()
-
+        if entity_type in self.storage and entity_id in self.storage[entity_type]:
+            return self.storage[entity_type][entity_id]
+        return None
 
     def update(self, entity):
-        entity_type = type(entity).__name__.lower()
-        if entity_type in self.data and entity.id in self.data[entity_type]:
-            self.data[entity_type][entity.id] = entity.__dict__
-            self.save_data()
-        else:
-            print(f"Entity of type '{entity_type}' with ID '{entity.id}' does not exist and cannot be updated.")
+        entity_type = type(entity).__name__
+        if entity_type in self.storage and entity.id in self.storage[entity_type]:
+            self.storage[entity_type][entity.id] = entity
+            return entity
+        return None
 
+    def delete(self, entity_id, entity_type):
+        if entity_type in self.storage and entity_id in self.storage[entity_type]:
+            del self.storage[entity_type][entity_id]
+            return True
+        return False
 
-    def delete(self,entity_type, entity_id):
-        if entity_type in self.data and entity_id in self.data[entity_type]:
-            del self.data[entity_type][entity_id]
-            self.save_data()
+    def save_to_json(self, filename):
+        serializable_storage = {}
+        for entity_type, entities in self.storage.items():
+            entity_dict = {}
+            for entity_id, entity in entities.items():
+                entity_data = entity.to_dict()
+                entity_dict[entity_id] = entity_data
+            serializable_storage[entity_type] = entity_dict
+        with open(filename, 'w') as file:
+            json.dump(serializable_storage, file, indent=4)

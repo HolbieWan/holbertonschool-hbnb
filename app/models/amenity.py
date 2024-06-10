@@ -6,8 +6,10 @@ class Amenity(BaseModel):
         super().__init__()
         self.name = name
 
-    def get_name(self):
-        return self.name
-
-    def set_name(self, new_name):
-        self.name = new_name
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat()
+        }

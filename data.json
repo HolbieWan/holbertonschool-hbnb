@@ -1,0 +1,22 @@
+{
+    "Review": {
+        "5c8a2910-2e1f-4c6c-aa16-f3785fe4e066": {
+            "id": "5c8a2910-2e1f-4c6c-aa16-f3785fe4e066",
+            "place_id": "Chez tonton",
+            "user_id": "user_id",
+            "rating": "***",
+            "text": "Great place to stay, had an amazing vacation",
+            "created_at": "2024-06-09T16:51:28.272112",
+            "updated_at": "2024-06-09T16:51:28.272121"
+        },
+        "060e303b-f56f-414e-92fd-8b6f5588dea4": {
+            "id": "060e303b-f56f-414e-92fd-8b6f5588dea4",
+            "place_id": "new_place_id2",
+            "user_id": "new_user_id2",
+            "rating": "***",
+            "text": "That place sucks!",
+            "created_at": "2024-06-09T16:51:44.429324",
+            "updated_at": "2024-06-09T16:52:29.797797"
+        }
+    }
+}
