@@ -1,7 +1,7 @@
 # app/tests/test_users.py
 import unittest
 import json
-from hbnb_evolution.app.routes.users_route import app, data_manager
+from app.routes.users_route import app, data_manager
 
 class UserAPITestCase(unittest.TestCase):
     def setUp(self):
