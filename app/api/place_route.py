@@ -1,5 +1,8 @@
 from flask import Blueprint, jsonify, request, abort
-
+from models.place import Place
+from persistence.data_manager import DataManager
+from datetime import datetime
+data_manager = DataManager()
 
 place_bp = Blueprint('place', __name__)
 
@@ -9,9 +12,6 @@ DATA_FILE = "data_place.json"  # Define the data file
 
 @place_bp.route('/places', methods=['POST'])
 def create_place():
-    from app.models.place import Place
-    from app.persistence.data_manager import DataManager
-    data_manager = DataManager()
 
     data = request.get_json()
     if not data:
@@ -38,8 +38,6 @@ def create_place():
 
 @place_bp.route('/places', methods=['GET'])
 def get_places():
-    from app.persistence.data_manager import DataManager
-    data_manager = DataManager()
 
     place_objects = data_manager.storage.get('Place', {}).values()
     places = [place.to_dict() for place in place_objects]
@@ -48,8 +46,6 @@ def get_places():
 
 @place_bp.route('/places/<place_id>', methods=['GET'])
 def get_place(place_id):
-    from app.persistence.data_manager import DataManager
-    data_manager = DataManager()
 
     place = data_manager.get(place_id, 'Place')
     if place is None:
@@ -59,9 +55,6 @@ def get_place(place_id):
 
 @place_bp.route('/places/<place_id>', methods=['PUT'])
 def update_place(place_id):
-    from app.persistence.data_manager import DataManager
-    data_manager = DataManager()
-    from datetime import datetime
 
     place = data_manager.get(place_id, 'Place')
     if place is None:
@@ -80,8 +73,6 @@ def update_place(place_id):
 
 @place_bp.route('/places/<place_id>', methods=['DELETE'])
 def delete_place(place_id):
-    from app.persistence.data_manager import DataManager
-    data_manager = DataManager()
 
     place = data_manager.get(place_id, 'Place')
     if place is None:

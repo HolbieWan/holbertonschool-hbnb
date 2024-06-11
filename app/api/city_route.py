@@ -1,4 +1,9 @@
 from flask import Blueprint, jsonify, request, abort
+from models.city import City
+from persistence.data_manager import DataManager
+from datetime import datetime
+data_manager = DataManager()
+
 
 city_bp = Blueprint('city', __name__)
 
@@ -7,9 +12,6 @@ DATA_FILE = "data_city.json"
 
 @city_bp.route('/city', methods=['POST'])
 def create_city():
-    from app.models.city import City
-    from app.persistence.data_manager import DataManager
-    data_manager = DataManager()
 
     if not request.json or not all(key in request.json for key in ['name', 'country_id']):
         abort(400, 'Name and country_id are required')
@@ -24,8 +26,6 @@ def create_city():
 
 @city_bp.route('/city', methods=['GET'])
 def get_cities():
-    from app.persistence.data_manager import DataManager
-    data_manager = DataManager()
 
     cities = [city.to_dict()
               for city in data_manager.storage.get('City', {}).values()]
@@ -34,8 +34,6 @@ def get_cities():
 
 @city_bp.route('/city/<city_id>', methods=['GET'])
 def get_city(city_id):
-    from app.persistence.data_manager import DataManager
-    data_manager = DataManager()
 
     city = data_manager.get(city_id, 'City')
     if city is None:
@@ -45,9 +43,6 @@ def get_city(city_id):
 
 @city_bp.route('/city/<city_id>', methods=['PUT'])
 def update_city(city_id):
-    from app.persistence.data_manager import DataManager
-    data_manager = DataManager()
-    from datetime import datetime
 
     city = data_manager.get(city_id, 'City')
     if city is None:
@@ -64,8 +59,6 @@ def update_city(city_id):
 
 @city_bp.route('/city/<city_id>', methods=['DELETE'])
 def delete_city(city_id):
-    from app.persistence.data_manager import DataManager
-    data_manager = DataManager()
 
     if not data_manager.delete(city_id, 'City'):
         abort(404, 'City not found')
