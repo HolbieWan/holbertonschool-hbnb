@@ -1,16 +1,18 @@
-from flask import Flask, jsonify, request, abort
-from app.models.place import Place
-from app.persistence.data_manager import DataManager
-from datetime import datetime
+from flask import Blueprint, jsonify, request, abort
 
-app = Flask(__name__)
-data_manager = DataManager()
+
+place_bp = Blueprint('place', __name__)
+
 
 DATA_FILE = "data_place.json"  # Define the data file
 
 
-@app.route('/places', methods=['POST'])
+@place_bp.route('/places', methods=['POST'])
 def create_place():
+    from app.models.place import Place
+    from app.persistence.data_manager import DataManager
+    data_manager = DataManager()
+
     data = request.get_json()
     if not data:
         abort(400, 'No input data provided')
@@ -34,23 +36,33 @@ def create_place():
     return jsonify(place.to_dict()), 201
 
 
-@app.route('/places', methods=['GET'])
+@place_bp.route('/places', methods=['GET'])
 def get_places():
+    from app.persistence.data_manager import DataManager
+    data_manager = DataManager()
+
     place_objects = data_manager.storage.get('Place', {}).values()
     places = [place.to_dict() for place in place_objects]
     return jsonify(places), 200
 
 
-@app.route('/places/<place_id>', methods=['GET'])
+@place_bp.route('/places/<place_id>', methods=['GET'])
 def get_place(place_id):
+    from app.persistence.data_manager import DataManager
+    data_manager = DataManager()
+
     place = data_manager.get(place_id, 'Place')
     if place is None:
         abort(404, 'Place not found')
     return jsonify(place.to_dict()), 200
 
 
-@app.route('/places/<place_id>', methods=['PUT'])
+@place_bp.route('/places/<place_id>', methods=['PUT'])
 def update_place(place_id):
+    from app.persistence.data_manager import DataManager
+    data_manager = DataManager()
+    from datetime import datetime
+
     place = data_manager.get(place_id, 'Place')
     if place is None:
         abort(404, 'Place not found')
@@ -66,15 +78,14 @@ def update_place(place_id):
     return jsonify(place.to_dict()), 200
 
 
-@app.route('/places/<place_id>', methods=['DELETE'])
+@place_bp.route('/places/<place_id>', methods=['DELETE'])
 def delete_place(place_id):
+    from app.persistence.data_manager import DataManager
+    data_manager = DataManager()
+
     place = data_manager.get(place_id, 'Place')
     if place is None:
         abort(404, 'Place not found')
     data_manager.delete(place_id, 'Place')
     data_manager.save_to_json(DATA_FILE)  # Save to JSON file
     return jsonify({}), 204
-
-
-if __name__ == '__main__':
-    app.run(debug=True)

@@ -1,4 +1,5 @@
-from app.models.base_model import BaseModel
+from models.base_model import BaseModel
+
 
 class User(BaseModel):
     def __init__(self, email, first_name, last_name):

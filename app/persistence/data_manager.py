@@ -1,5 +1,6 @@
 import json
-from app.persistence.ipersistence_manager import IPersistenceManager
+from persistence.ipersistence_manager import IPersistenceManager
+
 
 class DataManager(IPersistenceManager):
     def __init__(self):

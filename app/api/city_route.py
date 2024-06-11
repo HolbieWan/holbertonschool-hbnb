@@ -1,17 +1,19 @@
-from flask import Flask, jsonify, request, abort
-from app.models.city import City
-from app.persistence.data_manager import DataManager
-from datetime import datetime
+from flask import Blueprint, jsonify, request, abort
 
-app = Flask(__name__)
-data_manager = DataManager()
+city_bp = Blueprint('city', __name__)
+
 DATA_FILE = "data_city.json"
 
 
-@app.route('/city', methods=['POST'])
+@city_bp.route('/city', methods=['POST'])
 def create_city():
+    from app.models.city import City
+    from app.persistence.data_manager import DataManager
+    data_manager = DataManager()
+
     if not request.json or not all(key in request.json for key in ['name', 'country_id']):
         abort(400, 'Name and country_id are required')
+
     name = request.json['name']
     country_id = request.json['country_id']
     city = City(name, country_id)
@@ -20,23 +22,33 @@ def create_city():
     return jsonify(city.to_dict()), 201
 
 
-@app.route('/city', methods=['GET'])
+@city_bp.route('/city', methods=['GET'])
 def get_cities():
+    from app.persistence.data_manager import DataManager
+    data_manager = DataManager()
+
     cities = [city.to_dict()
               for city in data_manager.storage.get('City', {}).values()]
     return jsonify(cities), 200
 
 
-@app.route('/city/<city_id>', methods=['GET'])
+@city_bp.route('/city/<city_id>', methods=['GET'])
 def get_city(city_id):
+    from app.persistence.data_manager import DataManager
+    data_manager = DataManager()
+
     city = data_manager.get(city_id, 'City')
     if city is None:
         abort(404, 'City not found')
     return jsonify(city.to_dict()), 200
 
 
-@app.route('/city/<city_id>', methods=['PUT'])
+@city_bp.route('/city/<city_id>', methods=['PUT'])
 def update_city(city_id):
+    from app.persistence.data_manager import DataManager
+    data_manager = DataManager()
+    from datetime import datetime
+
     city = data_manager.get(city_id, 'City')
     if city is None:
         abort(404, 'City not found')
@@ -50,13 +62,12 @@ def update_city(city_id):
     return jsonify(city.to_dict()), 200
 
 
-@app.route('/city/<city_id>', methods=['DELETE'])
+@city_bp.route('/city/<city_id>', methods=['DELETE'])
 def delete_city(city_id):
+    from app.persistence.data_manager import DataManager
+    data_manager = DataManager()
+
     if not data_manager.delete(city_id, 'City'):
         abort(404, 'City not found')
     data_manager.save_to_json(DATA_FILE)
     return '', 204
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
