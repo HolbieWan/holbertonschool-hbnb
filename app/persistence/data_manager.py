@@ -1,7 +1,6 @@
 import json
 from persistence.ipersistence_manager import IPersistenceManager
 
-
 class DataManager(IPersistenceManager):
     def __init__(self):
         self.storage = {}
@@ -41,3 +40,34 @@ class DataManager(IPersistenceManager):
             serializable_storage[entity_type] = entity_dict
         with open(filename, 'w') as file:
             json.dump(serializable_storage, file, indent=4)
+
+    def get_by_email(self, email):
+        # Check if email already exists among users
+        users = self.storage.get('User', {}).values()
+        for user in users:
+            if user.email == email:
+                return user
+        return None
+
+
+    def place_exists_with_attributes(self, name, address, city_id, host_id, num_rooms, num_bathrooms, price_per_night, max_guests):
+        #check if a place already exists with the same attributes
+        places = self.storage.get('Place', {}).values()
+        for place in places:
+            if (place.name == name and
+                place.address == address and
+                place.city_id == city_id and
+                place.host_id == host_id and
+                place.num_rooms == num_rooms and
+                place.num_bathrooms == num_bathrooms and
+                place.price_per_night == price_per_night and
+                place.max_guests == max_guests):
+                return place
+        return False
+    
+    def review_exists_with_attributes(self, place_id, user_id):
+        reviews = self.storage.get('Review', {}).values()
+        for review in reviews:
+            if review.place_id == place_id and review.user_id == user_id:
+                return True
+        return False

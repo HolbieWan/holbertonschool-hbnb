@@ -3,6 +3,10 @@ from datetime import datetime
 
 class Country:
     def __init__(self, name, code):
+        if not name:
+            raise ValueError("Name is required!")
+        if not code:
+            raise ValueError("Code is required!")
         self.id = str(uuid.uuid4())
         self._name = name
         self._code = code
@@ -29,9 +33,9 @@ class Country:
 
     def to_dict(self):
         return {
-            "id": self.id,
-            "name": self.name,
-            "code": self.code,
+            "country_id": self.id,
+            "country_name": self.name,
+            "country_code": self.code,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat()
         }

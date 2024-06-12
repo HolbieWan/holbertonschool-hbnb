@@ -1,9 +1,17 @@
 from .base_model import BaseModel
+from persistence.data_manager import DataManager
 from datetime import datetime
 
+
 class Review(BaseModel):
+    data_manager = DataManager()
+
     def __init__(self, place_id, user_id, rating, text):
         super().__init__()
+        if not all([place_id, user_id, rating, text]):
+            raise ValueError("All fields are required!")
+        if self.__class__.data_manager.review_exists_with_attributes(place_id, user_id):
+            raise ValueError("Place already exists!")
         self._place_id = place_id
         self._user_id = user_id
         self._rating = rating
@@ -47,7 +55,7 @@ class Review(BaseModel):
 
     def to_dict(self):
         return {
-            "id": self.id,
+            "review_id": self.id,
             "place_id": self.place_id,
             "user_id": self.user_id,
             "rating": self.rating,
