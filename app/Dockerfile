@@ -1,4 +1,4 @@
-FROM python:3.8-alpine
+FROM python:3.9-alpine
 
 WORKDIR /app
 
@@ -6,12 +6,12 @@ COPY requirements.txt /app
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . /app
+COPY . .
 
-EXPOSE $PORT 
+ENV APP_PORT=8000
 
-ENV PORT 8000
+EXPOSE $APP_PORT
 
-VOLUME /data
+VOLUME app/data
 
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "app:app"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:$APP_PORT", "app:app"]
