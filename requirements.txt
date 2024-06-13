@@ -1,0 +1,8 @@
+Flask
+requests
+validate_email_address
+email_validator
+pycountry
+Flask-HTTPAuth
+flask_swagger_ui
+gunicorn
