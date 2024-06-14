@@ -38,7 +38,7 @@ app.register_blueprint(users_bp)
 
 # Swagger setup
 SWAGGER_URL = '/api/docs'
-API_URL = '/swagger.json'
+API_URL = '/swagger.yaml'
 
 SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
     SWAGGER_URL,
@@ -50,9 +50,11 @@ SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
 
 app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 
-@app.route('/swagger.json')
+
+@app.route('/swagger.yaml')
 def serve_swagger():
-    return send_from_directory(os.getcwd(), 'swagger.json')
+    return send_from_directory(os.getcwd(), 'swagger.yaml')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
