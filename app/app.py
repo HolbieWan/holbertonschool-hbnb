@@ -12,13 +12,14 @@ import os
 # Initialize Flask app
 app = Flask(__name__)
 
+
 # Initialize DataManagers with the appropriate JSON file paths
-data_manager_users = DataManager("data_users.json")
-data_manager_reviews = DataManager("data_reviews.json")
-data_manager_places = DataManager("data_places.json")
-data_manager_countries = DataManager("data_countries.json")
-data_manager_cities = DataManager("data_cities.json")
-data_manager_amenities = DataManager("data_amenities.json")
+data_manager_users = DataManager("data/data_users.json")
+data_manager_reviews = DataManager("data/data_reviews.json")
+data_manager_places = DataManager("data/data_places.json")
+data_manager_countries = DataManager("data/data_countries.json")
+data_manager_cities = DataManager("data/data_cities.json")
+data_manager_amenities = DataManager("data/data_amenities.json")
 
 # Set the data_manager for each blueprint in the app configuration
 app.config['DATA_MANAGER_USERS'] = data_manager_users
