@@ -1,11 +1,18 @@
 import json
+import os
 from persistence.ipersistence_manager import IPersistenceManager
 
 class DataManager(IPersistenceManager):
     def __init__(self, data_file):
         self.storage = {}
         self.data_file = data_file
+        self.create_directory_if_not_exists()
         self.load_from_json()
+
+    def create_directory_if_not_exists(self):
+        directory = os.path.dirname(self.data_file)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
     def load_from_json(self):
         try:

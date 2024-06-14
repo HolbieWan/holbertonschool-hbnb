@@ -1,0 +1,13 @@
+{
+    "Review": {
+        "e98cc4eb-3327-4d6d-9f32-64857e8cd53e": {
+            "review_id": "e98cc4eb-3327-4d6d-9f32-64857e8cd53e",
+            "place_id": "b89c7e61-5cda-444a-9654-e18629ede56a",
+            "user_id": "83236cb6-d997-4005-9187-efb489902724",
+            "rating": 3,
+            "text": "Great place to stay, had an amazing vacation",
+            "created_at": "2024-06-14T17:44:34.297475",
+            "updated_at": "2024-06-14T17:44:34.297480"
+        }
+    }
+}
