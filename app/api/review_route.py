@@ -56,11 +56,7 @@ def update_review(review_id):
         abort(400, 'No input data provided')
     try:
         for key, value in data.items():
-            if hasattr(review, key):
-                if not value:
-                    abort(400, f"Empty value provided for {key}")
-                if key == "rating":
-                    value = int(value)
+            if key in ['rating', 'text']:  # Only allow updating rating and text
                 setattr(review, key, value)
         review.updated_at = datetime.utcnow()
         data_manager.save(review)

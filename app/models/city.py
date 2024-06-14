@@ -18,7 +18,7 @@ class City(BaseModel):
     def from_dict(data, data_manager):
         city = City(
             name=data['city_name'],
-            country_id=data['country_code'],
+            country_id=data['country_id'],
             data_manager=data_manager
         )
         city.id = data['city_id']

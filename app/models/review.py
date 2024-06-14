@@ -48,9 +48,22 @@ class Review(BaseModel):
     def rating(self):
         return self._rating
 
+    @rating.setter
+    def rating(self, value):
+        value = int(value)
+        if not 1 <= value <= 5:
+            raise ValueError("Rating must be between 1 and 5")
+        self._rating = value
+
     @property
     def text(self):
         return self._text
+
+    @text.setter
+    def text(self, value):
+        if not value:
+            raise ValueError("Text cannot be empty")
+        self._text = value
 
     def to_dict(self):
         return {
