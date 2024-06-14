@@ -1,10 +1,8 @@
-from .base_model import BaseModel
-from persistence.data_manager import DataManager
+from models.base_model import BaseModel
+from datetime import datetime
 
 class Place(BaseModel):
-    data_manager = DataManager()
-
-    def __init__(self, name, description, address, city_id, latitude, longitude, host_id, num_rooms, num_bathrooms, price_per_night, max_guests):
+    def __init__(self, name, description, address, city_id, latitude, longitude, host_id, num_rooms, num_bathrooms, price_per_night, max_guests, amenities=None, data_manager=None):
         super().__init__()
         if not all([name, description, address, city_id, latitude, longitude, host_id, num_rooms, num_bathrooms, price_per_night, max_guests]):
             raise ValueError("All fields are required!")
@@ -20,7 +18,7 @@ class Place(BaseModel):
             raise ValueError("Price per night must be a positive value between 0 and 10000")
         if not 1 <= max_guests <= 100:
             raise ValueError("Max guests must be a positive integer between 1 and 100")
-        if self.__class__.data_manager.place_exists_with_attributes(name, address, city_id, host_id, num_rooms, num_bathrooms, price_per_night, max_guests):
+        if data_manager and data_manager.place_exists_with_attributes(name, address, city_id, host_id, num_rooms, num_bathrooms, price_per_night, max_guests):
             raise ValueError("Place already exists!")
 
         self._name = name
@@ -34,6 +32,30 @@ class Place(BaseModel):
         self._num_bathrooms = num_bathrooms
         self._price_per_night = price_per_night
         self._max_guests = max_guests
+        self._amenities = amenities or []
+        self.data_manager = data_manager
+
+    @staticmethod
+    def from_dict(data, data_manager):
+        place = Place(
+            name=data['place_name'],
+            description=data['description'],
+            address=data['address'],
+            city_id=data['city_id'],
+            latitude=data['latitude'],
+            longitude=data['longitude'],
+            host_id=data['host_id'],
+            num_rooms=data['num_rooms'],
+            num_bathrooms=data['num_bathrooms'],
+            price_per_night=data['price_per_night'],
+            max_guests=data['max_guests'],
+            amenities=data.get('amenities', []),
+            data_manager=data_manager
+        )
+        place.id = data['place_id']
+        place.created_at = datetime.fromisoformat(data['created_at'])
+        place.updated_at = datetime.fromisoformat(data['updated_at'])
+        return place
 
     @property
     def name(self):
@@ -146,20 +168,40 @@ class Place(BaseModel):
         self._max_guests = value
         self.save()
 
+    @property
+    def amenities(self):
+        return self._amenities
+
+    @amenities.setter
+    def amenities(self, value):
+        self._amenities = value
+        self.save()
+
+    def add_amenity(self, amenity_id):
+        if amenity_id not in self._amenities:
+            self._amenities.append(amenity_id)
+            self.save()
+
+    def remove_amenity(self, amenity_id):
+        if amenity_id in self._amenities:
+            self._amenities.remove(amenity_id)
+            self.save()
+
     def to_dict(self):
         return {
             "place_id": self.id,
-            "place_name": self.name,
-            "description": self.description,
-            "address": self.address,
-            "city_id": self.city_id,
-            "latitude": self.latitude,
-            "longitude": self.longitude,
-            "host_id": self.host_id,
-            "num_rooms": self.num_rooms,
-            "num_bathrooms": self.num_bathrooms,
-            "price_per_night": self.price_per_night,
-            "max_guests": self.max_guests,
+            "place_name": self._name,
+            "description": self._description,
+            "address": self._address,
+            "city_id": self._city_id,
+            "latitude": self._latitude,
+            "longitude": self._longitude,
+            "host_id": self._host_id,
+            "num_rooms": self._num_rooms,
+            "num_bathrooms": self._num_bathrooms,
+            "price_per_night": self._price_per_night,
+            "max_guests": self._max_guests,
+            "amenities": self._amenities,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat()
         }

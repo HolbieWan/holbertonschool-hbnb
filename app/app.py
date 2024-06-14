@@ -6,12 +6,29 @@ from api.city_route import city_bp
 from api.amenity_route import amenity_bp
 from flask import Flask, send_from_directory
 from flask_swagger_ui import get_swaggerui_blueprint
+from persistence.data_manager import DataManager
 import os
 
-
+# Initialize Flask app
 app = Flask(__name__)
 
+# Initialize DataManagers with the appropriate JSON file paths
+data_manager_users = DataManager("data_users.json")
+data_manager_reviews = DataManager("data_reviews.json")
+data_manager_places = DataManager("data_places.json")
+data_manager_countries = DataManager("data_countries.json")
+data_manager_cities = DataManager("data_cities.json")
+data_manager_amenities = DataManager("data_amenities.json")
 
+# Set the data_manager for each blueprint in the app configuration
+app.config['DATA_MANAGER_USERS'] = data_manager_users
+app.config['DATA_MANAGER_REVIEWS'] = data_manager_reviews
+app.config['DATA_MANAGER_PLACES'] = data_manager_places
+app.config['DATA_MANAGER_COUNTRIES'] = data_manager_countries
+app.config['DATA_MANAGER_CITIES'] = data_manager_cities
+app.config['DATA_MANAGER_AMENITIES'] = data_manager_amenities
+
+# Register blueprints
 app.register_blueprint(amenity_bp)
 app.register_blueprint(city_bp)
 app.register_blueprint(country_bp)
@@ -19,6 +36,7 @@ app.register_blueprint(place_bp)
 app.register_blueprint(review_bp)
 app.register_blueprint(users_bp)
 
+# Swagger setup
 SWAGGER_URL = '/api/docs'
 API_URL = '/swagger.json'
 
@@ -32,11 +50,9 @@ SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
 
 app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 
-
 @app.route('/swagger.json')
 def serve_swagger():
     return send_from_directory(os.getcwd(), 'swagger.json')
-
 
 if __name__ == "__main__":
     app.run(debug=True)

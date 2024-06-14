@@ -1,12 +1,28 @@
 {
     "User": {
-        "4044779d-a0b5-4b76-98c4-490638635863": {
-            "id": "4044779d-a0b5-4b76-98c4-490638635863",
-            "email": "johnny.begood@example.com",
+        "ed8cfe16-956d-45c5-adeb-6878b40ba4b3": {
+            "user_id": "ed8cfe16-956d-45c5-adeb-6878b40ba4b3",
+            "email": "Ced@gmail.com",
+            "first_name": "Ced",
+            "last_name": "leboss",
+            "created_at": "2024-06-13T19:48:07.112485",
+            "updated_at": "2024-06-13T19:48:07.112498"
+        },
+        "cdb35834-9514-4612-aaeb-43d927330b16": {
+            "user_id": "cdb35834-9514-4612-aaeb-43d927330b16",
+            "email": "Doug@gmail.com",
+            "first_name": "Doug",
+            "last_name": "lartiste",
+            "created_at": "2024-06-13T21:39:20.832460",
+            "updated_at": "2024-06-13T21:39:20.832464"
+        },
+        "eafdc076-0074-4733-afb8-ef7205fc918c": {
+            "user_id": "eafdc076-0074-4733-afb8-ef7205fc918c",
+            "email": "johnny.begoo@gmail.com",
             "first_name": "Johnny",
             "last_name": "Begood",
-            "created_at": "2024-06-10T11:21:25.965689",
-            "updated_at": "2024-06-10T11:22:04.852398"
+            "created_at": "2024-06-13T21:50:35.290371",
+            "updated_at": "2024-06-13T21:51:02.272448"
         }
     }
 }
