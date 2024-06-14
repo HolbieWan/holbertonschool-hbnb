@@ -1,25 +1,31 @@
-import uuid
+import pycountry
 from datetime import datetime
+from models.base_model import BaseModel
 
-class Country:
-    def __init__(self, name, code, data_manager):
+class Country(BaseModel):
+    def __init__(self, name, code=None):
+        super().__init__()
         if not name:
             raise ValueError("Name is required!")
-        if not code:
-            raise ValueError("Code is required!")
-        self.id = str(uuid.uuid4())
         self._name = name
-        self._code = code
-        self._data_manager = data_manager
+        self._code = code if code else self.get_country_code(name)
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
+
+    def get_country_code(self, country_name):
+        try:
+            country = pycountry.countries.get(name=country_name)
+            if country:
+                return country.alpha_2
+        except LookupError:
+            raise ValueError("Invalid country name!")
+        return None
 
     @staticmethod
     def from_dict(data, data_manager):
         country = Country(
-            name=data['country_name'],
-            code=data['country_code'],
-            data_manager=data_manager
+            name=data['name'],
+            code=data.get('code', None)
         )
         country.id = data['country_id']
         country.created_at = datetime.fromisoformat(data['created_at'])
@@ -30,28 +36,27 @@ class Country:
     def name(self):
         return self._name
 
-    @name.setter
-    def name(self, value):
-        self._name = value
-        self.updated_at = datetime.now()
-
     @property
     def code(self):
         return self._code
 
+    @name.setter
+    def name(self, value):
+        if not value:
+            raise ValueError("Name cannot be empty")
+        self._name = value
+
     @code.setter
     def code(self, value):
+        if not value:
+            raise ValueError("Code cannot be empty")
         self._code = value
-        self.updated_at = datetime.now()
 
     def to_dict(self):
         return {
             "country_id": self.id,
-            "country_name": self._name,
-            "country_code": self._code,
+            "name": self._name,
+            "code": self._code,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat()
         }
-
-    def save(self):
-        self.updated_at = datetime.now()

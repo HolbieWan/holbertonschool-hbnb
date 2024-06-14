@@ -1,21 +1,21 @@
 from flask import Blueprint, jsonify, request, abort, current_app
-from datetime import datetime
 from models.country import Country
+from datetime import datetime
 
 country_bp = Blueprint('country', __name__)
 
 @country_bp.route('/country', methods=['POST'])
 def create_country():
     data_manager = current_app.config['DATA_MANAGER_COUNTRIES']
-    if not request.json or not all(key in request.json for key in ['name', 'code']):
-        abort(400, 'Name and code are required')
+    if not request.json or not 'name' in request.json:
+        abort(400, 'Name is required')
+    name = request.json['name']
+    code = request.json.get('code', None)
     try:
-        name = request.json['name']
-        code = request.json['code']
-        country = Country(name, code, data_manager)
+        country = Country(name, code)
+        data_manager.save(country)
     except ValueError as e:
         abort(400, str(e))
-    data_manager.save(country)
     return jsonify(country.to_dict()), 201
 
 @country_bp.route('/country', methods=['GET'])
@@ -38,19 +38,20 @@ def update_country(country_id):
     country = data_manager.get(country_id, 'Country')
     if country is None:
         abort(404, 'Country not found')
-    if not request.json:
+    data = request.get_json()
+    if not data:
         abort(400, 'Invalid data')
-    new_name = request.json.get('name', country.name)
-    new_code = request.json.get('code', country.code)
+    new_name = data.get('name', country.name)
+    new_code = data.get('code', country.code)
     try:
-        if 'name' in request.json and not new_name:
+        if 'name' in data and not new_name:
             abort(400, 'Name is required!')
         country.name = new_name
         country.code = new_code
         country.updated_at = datetime.utcnow()
+        data_manager.save(country)
     except ValueError as e:
         abort(400, str(e))
-    data_manager.update(country)
     return jsonify(country.to_dict()), 200
 
 @country_bp.route('/country/<country_id>', methods=['DELETE'])
