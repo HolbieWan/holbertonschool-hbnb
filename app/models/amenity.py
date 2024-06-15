@@ -7,7 +7,7 @@ class Amenity(BaseModel):
         if not name:
             raise ValueError("Amenity name is required!")
         if data_manager.amenity_exists_with_name(name):
-            raise ValueError("Amenity name must be unique")
+            raise ValueError("This amenity already exists!")
         self._name = name
         self.data_manager = data_manager
 

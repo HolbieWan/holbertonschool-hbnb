@@ -6,6 +6,13 @@
             "country_id": "FR",
             "created_at": "2024-06-14T17:45:58.762549",
             "updated_at": "2024-06-15T07:14:43.123444"
+        },
+        "d7c5bb7b-d9a6-494e-baf1-4f27674eaecf": {
+            "city_id": "d7c5bb7b-d9a6-494e-baf1-4f27674eaecf",
+            "city_name": "paris",
+            "country_id": "FR",
+            "created_at": "2024-06-15T09:51:34.448374",
+            "updated_at": "2024-06-15T09:51:34.448377"
         }
     }
 }

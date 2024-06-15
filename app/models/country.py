@@ -13,13 +13,10 @@ class Country(BaseModel):
         self.updated_at = datetime.now()
 
     def get_country_code(self, country_name):
-        try:
-            country = pycountry.countries.get(name=country_name)
-            if country:
-                return country.alpha_2
-        except LookupError:
-            raise ValueError("Invalid country name!")
-        return None
+        country = pycountry.countries.get(name=country_name)
+        if country:
+            return country.alpha_2
+        raise ValueError("Invalid country name!")
 
     @staticmethod
     def from_dict(data, data_manager):
@@ -36,21 +33,23 @@ class Country(BaseModel):
     def name(self):
         return self._name
 
-    @property
-    def code(self):
-        return self._code
-
     @name.setter
     def name(self, value):
         if not value:
             raise ValueError("Name cannot be empty")
         self._name = value
+        self.updated_at = datetime.now()
+
+    @property
+    def code(self):
+        return self._code
 
     @code.setter
     def code(self, value):
         if not value:
             raise ValueError("Code cannot be empty")
         self._code = value
+        self.updated_at = datetime.now()
 
     def to_dict(self):
         return {

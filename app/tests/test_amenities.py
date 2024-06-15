@@ -1,13 +1,17 @@
 import unittest
 from datetime import datetime, timedelta
 from time import sleep
-from app.models.amenity import Amenity
-from app.models.base_model import BaseModel
+from unittest.mock import MagicMock
+from models.amenity import Amenity
+from models.base_model import BaseModel
 
 class TestAmenity(unittest.TestCase):
 
     def setUp(self):
-        self.amenity = Amenity(name="WiFi")
+        # Mock the data manager
+        self.mock_data_manager = MagicMock()
+        self.mock_data_manager.amenity_exists_with_name.return_value = False
+        self.amenity = Amenity(name="WiFi", data_manager=self.mock_data_manager)
 
     def test_init(self):
         self.assertIsInstance(self.amenity, BaseModel)
@@ -22,8 +26,8 @@ class TestAmenity(unittest.TestCase):
         self.amenity.updated_at = datetime(2023, 6, 2, 12, 0, 0)
         amenity_dict = self.amenity.to_dict()
         expected_dict = {
-            "id": "amenity_123",
-            "name": "WiFi",
+            "amenity_id": "amenity_123",
+            "amenity_name": "WiFi",
             "created_at": "2023-06-01T12:00:00",
             "updated_at": "2023-06-02T12:00:00"
         }
@@ -41,6 +45,17 @@ class TestAmenity(unittest.TestCase):
         new_updated_at = self.amenity.updated_at
         self.assertNotEqual(old_updated_at, new_updated_at)
         self.assertGreater(new_updated_at, old_updated_at)
+
+    def test_amenity_already_exists(self):
+        self.mock_data_manager.amenity_exists_with_name.return_value = True
+        with self.assertRaises(ValueError) as context:
+            Amenity(name="WiFi", data_manager=self.mock_data_manager)
+        self.assertEqual(str(context.exception), "This amenity already exists!")
+
+    def test_empty_name(self):
+        with self.assertRaises(ValueError) as context:
+            Amenity(name="", data_manager=self.mock_data_manager)
+        self.assertEqual(str(context.exception), "Amenity name is required!")
 
 if __name__ == '__main__':
     unittest.main()

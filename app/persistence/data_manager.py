@@ -117,7 +117,9 @@ class DataManager(IPersistenceManager):
             return True
         return False
 
-    def save_to_json(self):
+    def save_to_json(self, file_path=None):
+        if not file_path:
+            file_path = self.data_file
         serializable_storage = {}
         for entity_type, entities in self.storage.items():
             entity_dict = {}
@@ -125,5 +127,5 @@ class DataManager(IPersistenceManager):
                 entity_data = entity.to_dict()
                 entity_dict[entity_id] = entity_data
             serializable_storage[entity_type] = entity_dict
-        with open(self.data_file, 'w') as file:
+        with open(file_path, 'w') as file:
             json.dump(serializable_storage, file, indent=4)

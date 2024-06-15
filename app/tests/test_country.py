@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime, timedelta
-from app.models.country import Country
+from models.country import Country
 
 class TestCountry(unittest.TestCase):
 
@@ -23,7 +23,7 @@ class TestCountry(unittest.TestCase):
         country_dict = self.country.to_dict()
 
         expected_dict = {
-            "id": "country_123",
+            "country_id": "country_123",
             "name": "United States",
             "code": "US",
             "created_at": "2023-06-01T12:00:00",
@@ -40,6 +40,30 @@ class TestCountry(unittest.TestCase):
         initial_time = self.country.updated_at
         self.country.name = "USA"
         self.assertNotEqual(self.country.updated_at, initial_time)
+
+    def test_get_country_code_valid(self):
+        valid_country = Country(name="Spain")
+        self.assertEqual(valid_country.code, "ES")
+
+    def test_get_country_code_invalid(self):
+        with self.assertRaises(ValueError) as context:
+            Country(name="InvalidCountryName")
+        self.assertEqual(str(context.exception), "Invalid country name!")
+
+    def test_empty_name(self):
+        with self.assertRaises(ValueError) as context:
+            Country(name="")
+        self.assertEqual(str(context.exception), "Name is required!")
+
+    def test_set_empty_name(self):
+        with self.assertRaises(ValueError) as context:
+            self.country.name = ""
+        self.assertEqual(str(context.exception), "Name cannot be empty")
+
+    def test_set_empty_code(self):
+        with self.assertRaises(ValueError) as context:
+            self.country.code = ""
+        self.assertEqual(str(context.exception), "Code cannot be empty")
 
 if __name__ == '__main__':
     unittest.main()

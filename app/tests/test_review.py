@@ -1,11 +1,20 @@
 import unittest
 from datetime import datetime, timedelta
-from app.models.review import Review
+from unittest.mock import MagicMock
+from models.review import Review
 
 class TestReview(unittest.TestCase):
 
     def setUp(self):
-        self.review = Review(place_id="123", user_id="456", rating=5, text="Great place!")
+        self.mock_data_manager = MagicMock()
+        self.mock_data_manager.review_exists_with_attributes.return_value = False
+        self.review = Review(
+            place_id="123",
+            user_id="456",
+            rating=5,
+            text="Great place!",
+            data_manager=self.mock_data_manager
+        )
 
     def test_init(self):
         self.assertIsInstance(self.review, Review)
@@ -23,7 +32,7 @@ class TestReview(unittest.TestCase):
         self.review.updated_at = datetime(2023, 6, 2, 12, 0, 0)
         review_dict = self.review.to_dict()
         expected_dict = {
-            "id": "review_123",
+            "review_id": "review_123",
             "place_id": "123",
             "user_id": "456",
             "rating": 5,
@@ -41,6 +50,22 @@ class TestReview(unittest.TestCase):
         initial_time = self.review.updated_at
         self.review.text = "Amazing place!"
         self.assertNotEqual(self.review.updated_at, initial_time)
+
+    def test_invalid_rating(self):
+        with self.assertRaises(ValueError) as context:
+            Review(place_id="123", user_id="456", rating=6, text="Great place!", data_manager=self.mock_data_manager)
+        self.assertEqual(str(context.exception), "Rating must be between 1 and 5")
+
+    def test_missing_fields(self):
+        with self.assertRaises(ValueError) as context:
+            Review(place_id="123", user_id="", rating=5, text="Great place!", data_manager=self.mock_data_manager)
+        self.assertEqual(str(context.exception), "All fields are required!")
+
+    def test_duplicate_review(self):
+        self.mock_data_manager.review_exists_with_attributes.return_value = True
+        with self.assertRaises(ValueError) as context:
+            Review(place_id="123", user_id="456", rating=5, text="Great place!", data_manager=self.mock_data_manager)
+        self.assertEqual(str(context.exception), "Review already exists for this user and place")
 
 if __name__ == '__main__':
     unittest.main()

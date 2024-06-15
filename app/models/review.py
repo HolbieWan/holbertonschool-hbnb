@@ -54,6 +54,8 @@ class Review(BaseModel):
         if not 1 <= value <= 5:
             raise ValueError("Rating must be between 1 and 5")
         self._rating = value
+        self.updated_at = datetime.now()
+        self.save()
 
     @property
     def text(self):
@@ -64,6 +66,8 @@ class Review(BaseModel):
         if not value:
             raise ValueError("Text cannot be empty")
         self._text = value
+        self.updated_at = datetime.now()
+        self.save()
 
     def to_dict(self):
         return {
