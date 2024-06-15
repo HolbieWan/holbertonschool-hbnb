@@ -4,7 +4,7 @@ from models.city import City
 
 city_bp = Blueprint('city', __name__)
 
-@city_bp.route('/city', methods=['POST'])
+@city_bp.route('/cities', methods=['POST'])
 def create_city():
     data_manager = current_app.config['DATA_MANAGER_CITIES']
     if not request.json or not all(key in request.json for key in ['name', 'country_id']):
@@ -18,13 +18,13 @@ def create_city():
     data_manager.save(city)
     return jsonify(city.to_dict()), 201
 
-@city_bp.route('/city', methods=['GET'])
+@city_bp.route('/cities', methods=['GET'])
 def get_cities():
     data_manager = current_app.config['DATA_MANAGER_CITIES']
     cities = [city.to_dict() for city in data_manager.storage.get('City', {}).values()]
     return jsonify(cities), 200
 
-@city_bp.route('/city/<city_id>', methods=['GET'])
+@city_bp.route('/cities/<city_id>', methods=['GET'])
 def get_city(city_id):
     data_manager = current_app.config['DATA_MANAGER_CITIES']
     city = data_manager.get(city_id, 'City')
@@ -32,7 +32,7 @@ def get_city(city_id):
         abort(404, 'City not found')
     return jsonify(city.to_dict()), 200
 
-@city_bp.route('/city/<city_id>', methods=['PUT'])
+@city_bp.route('/cities/<city_id>', methods=['PUT'])
 def update_city(city_id):
     data_manager = current_app.config['DATA_MANAGER_CITIES']
     city = data_manager.get(city_id, 'City')
@@ -55,14 +55,14 @@ def update_city(city_id):
     data_manager.update(city)
     return jsonify(city.to_dict()), 200
 
-@city_bp.route('/city/<city_id>', methods=['DELETE'])
+@city_bp.route('/cities/<city_id>', methods=['DELETE'])
 def delete_city(city_id):
     data_manager = current_app.config['DATA_MANAGER_CITIES']
     if not data_manager.delete(city_id, 'City'):
         abort(404, 'City not found')
     return '', 204
 
-@city_bp.route('/country/<country_code>/city', methods=['GET'])
+@city_bp.route('/country/<country_code>/cities', methods=['GET'])
 def get_city_by_country_code(country_code):
     data_manager = current_app.config['DATA_MANAGER_CITIES']
     cities = []
