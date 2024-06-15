@@ -2,23 +2,23 @@
     "Place": {
         "b89c7e61-5cda-444a-9654-e18629ede56a": {
             "place_id": "b89c7e61-5cda-444a-9654-e18629ede56a",
-            "place_name": "Chez Moris",
-            "description": "Top la classe",
-            "address": "Rue de la pluie",
+            "place_name": "Chez Martine",
+            "description": "On est bien chez Martine",
+            "address": "Rue du vent",
             "city_id": "Nantes",
-            "latitude": 47.2184,
-            "longitude": -1.5536,
-            "host_id": "83236cb6-d997-4005-9187-efb489902724",
-            "num_rooms": 10,
-            "num_bathrooms": 10,
-            "price_per_night": 200.0,
+            "latitude": -20,
+            "longitude": 20,
+            "host_id": "owner id",
+            "num_rooms": 4,
+            "num_bathrooms": 4,
+            "price_per_night": 500,
             "max_guests": 10,
             "amenities": [
                 "garage",
                 "Sauna"
             ],
             "created_at": "2024-06-14T17:41:45.376026",
-            "updated_at": "2024-06-14T17:41:45.376030"
+            "updated_at": "2024-06-15T20:29:43.940579"
         },
         "718f48aa-df16-4307-a222-404f92562eb5": {
             "place_id": "718f48aa-df16-4307-a222-404f92562eb5",
@@ -39,6 +39,46 @@
             ],
             "created_at": "2024-06-15T09:52:58.144400",
             "updated_at": "2024-06-15T09:52:58.144404"
+        },
+        "09bed630-5468-42ce-9ff2-3c8c1f3c2188": {
+            "place_id": "09bed630-5468-42ce-9ff2-3c8c1f3c2188",
+            "place_name": "Chez Johny",
+            "description": "Top la classe",
+            "address": "Rue de la pluie",
+            "city_id": "Nantes",
+            "latitude": 47.2184,
+            "longitude": -1.5536,
+            "host_id": "83236cb6-d997-4005-9187-efb489902724",
+            "num_rooms": 10,
+            "num_bathrooms": 10,
+            "price_per_night": 200.0,
+            "max_guests": 10,
+            "amenities": [
+                "garage",
+                "Sauna"
+            ],
+            "created_at": "2024-06-15T10:34:11.572580",
+            "updated_at": "2024-06-15T10:34:11.572584"
+        },
+        "7c1d5ce4-542c-4be7-8762-11f27c57ed5d": {
+            "place_id": "7c1d5ce4-542c-4be7-8762-11f27c57ed5d",
+            "place_name": "Chez Marcel",
+            "description": "Top la classe",
+            "address": "Rue de la pluie",
+            "city_id": "Nantes",
+            "latitude": 47.2184,
+            "longitude": -1.5536,
+            "host_id": "83236cb6-d997-4005-9187-efb489902724",
+            "num_rooms": 10,
+            "num_bathrooms": 10,
+            "price_per_night": 200.0,
+            "max_guests": 10,
+            "amenities": [
+                "garage",
+                "Sauna"
+            ],
+            "created_at": "2024-06-15T20:28:52.204264",
+            "updated_at": "2024-06-15T20:28:52.204268"
         }
     }
 }

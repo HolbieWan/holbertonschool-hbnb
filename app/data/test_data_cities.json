@@ -1,0 +1,11 @@
+{
+    "City": {
+        "8091c611-fd61-471b-95cd-8add3669dbe4": {
+            "city_id": "8091c611-fd61-471b-95cd-8add3669dbe4",
+            "city_name": "Updated Test City",
+            "country_id": "country_456",
+            "created_at": "2024-06-15T20:20:14.725217",
+            "updated_at": "2024-06-15T20:20:14.725476"
+        }
+    }
+}

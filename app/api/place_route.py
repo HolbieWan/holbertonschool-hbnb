@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request, abort, current_app
 from models.place import Place
+from datetime import datetime
 
 place_bp = Blueprint('place', __name__)
 
