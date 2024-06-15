@@ -4,17 +4,47 @@ from models.user import User
 
 users_bp = Blueprint('users', __name__)
 
+
 @users_bp.route('/')
-def index():
-    return "Hello, World!"
+def home():
+    """
+    * This is the home route *
+
+    Returns:
+
+    - str: Welcoming message
+
+    """
+    return "Welcome to our HBTN custom API!"
+
+
+# ********************************************************************* #
+
 
 @users_bp.route('/users', methods=['POST'])
 def create_user():
+    """
+    * This route creates a new user *
+
+    Methods: POST
+
+    Request Body:
+    - email (str) The user's email
+    - first_name (str) The user's first name
+    - last_name: (str) The user's last name
+
+    Returns:
+
+    - dict: User data
+
+    """
+
     data_manager = current_app.config['DATA_MANAGER_USERS']
     data = request.json
-    if not data or not 'email' in data:
+
+    if not data or 'email' not in data:
         abort(400, 'Email is required')
-    
+
     email = data.get('email')
     first_name = data.get('first_name')
     last_name = data.get('last_name')
@@ -24,7 +54,8 @@ def create_user():
         abort(400, 'Invalid email format!')
 
     # Check if fields are strings
-    if not isinstance(email, str) or not isinstance(first_name, str) or not isinstance(last_name, str):
+    if not isinstance(email, str) or not isinstance(first_name, str) \
+            or not isinstance(last_name, str):
         abort(400, 'Fields must be of string type')
 
     # Check if fields are not empty
@@ -41,26 +72,88 @@ def create_user():
         abort(400, str(e))
 
     data_manager.save(user)
+
     return jsonify(user.to_dict()), 201
+
+
+# ********************************************************************* #
+
 
 @users_bp.route('/users', methods=['GET'])
 def get_users():
+    """
+    * This route gets all users *
+
+    Methods: GET
+
+    Returns:
+
+    - list: List of users
+
+    """
     data_manager = current_app.config['DATA_MANAGER_USERS']
-    users = [user.to_dict() for user in data_manager.storage.get('User', {}).values()]
+
+    users = [user.to_dict()
+             for user in data_manager.storage.get('User', {}).values()]
     return jsonify(users), 200
+
+
+# ********************************************************************* #
+
 
 @users_bp.route('/users/<user_id>', methods=['GET'])
 def get_user(user_id):
+    """
+    * This route gets a user by ID *
+
+    Methods: GET
+
+    Parameters:
+        users_id: (str) The user's ID
+
+    Returns:
+
+    - dict: User data
+
+    """
+
     data_manager = current_app.config['DATA_MANAGER_USERS']
     user = data_manager.get(user_id, 'User')
+
     if user is None:
         abort(404, 'User not found')
     return jsonify(user.to_dict()), 200
 
+
+# ********************************************************************* #
+
+
 @users_bp.route('/users/<user_id>', methods=['PUT'])
 def update_user(user_id):
+    """
+    * This route updates a user *
+
+    Methods: PUT
+
+    Parameters:
+        user_id (str): The user's ID
+
+    Request Body:
+
+    - email: (str) The user's email
+    - first_name: (str) The user's first name
+    - last_name: (str) The user's last name
+
+    Returns:
+
+    - dict: User data
+
+
+    """
+
     data_manager = current_app.config['DATA_MANAGER_USERS']
     user = data_manager.get(user_id, 'User')
+
     if user is None:
         abort(404, 'User not found')
 
@@ -107,9 +200,29 @@ def update_user(user_id):
     data_manager.update(user)
     return jsonify(user.to_dict()), 200
 
+
+# ********************************************************************* #
+
+
 @users_bp.route('/users/<user_id>', methods=['DELETE'])
 def delete_user(user_id):
+    """
+    * This route deletes a user *
+
+    Methods: DELETE
+
+    Parameters:
+        user_id (str): The user's ID
+
+    Returns:
+
+    - str: Empty string
+
+
+    """
+
     data_manager = current_app.config['DATA_MANAGER_USERS']
+
     if not data_manager.delete(user_id, 'User'):
         abort(404, 'User not found')
     return '', 204
