@@ -1,35 +1,38 @@
 FROM python:3.11-alpine
 
-# Créez l'utilisateur hbnb
+# Create a non-root user for the application
 RUN adduser -D -s /bin/bash hbnb
 
-# Passez à l'utilisateur hbnb
-USER hbnb
+# Log in as root user
+USER root
 
-# Définissez le répertoire de travail
-WORKDIR /home/hbnb
+# Define the working directory for the application
+WORKDIR /home/hbnb/app
 
-# Copiez le fichier requirements.txt
+# Copy the configuration files into the container
 COPY requirements.txt .
-
-# Installez les dépendances nécessaires pour pip et les librairies système
-RUN pip install --no-cache-dir -r requirements.txt
-    
-
-# Copiez l'application dans le conteneur
 COPY app /home/hbnb/app
+COPY data /home/hbnb/app/data 
 
-# Définissez la variable d'environnement et exposez le port
+# Install dependencies of Python
+RUN pip install --no-cache-dir -r requirements.txt
+
+#Define the environment variables and expose the port
 ENV PORT 8000
 EXPOSE 8000
 
-# Définissez le volume
+# Define permissions for the data directory
+RUN mkdir -p /home/hbnb/app/data \
+    && chown -R hbnb:hbnb /home/hbnb/app/data
+
+# Log in as a non-root user
+USER hbnb
+
+# Define the volume for the data directory
 VOLUME ["/home/hbnb/app/data"]
 
-# Changez le répertoire de travail pour /home/hbnb/app
+# Define working directory for running the application
 WORKDIR /home/hbnb/app
 
-# Utilisez l'ENTRYPOINT pour exécuter votre application
-#ENTRYPOINT ["python", "app.py"]
-
+# Run the application with Gunicorn
 CMD ["python", "-m", "gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "app:app"]

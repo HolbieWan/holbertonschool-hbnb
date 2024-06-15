@@ -8,6 +8,8 @@ from flask import Flask, send_from_directory
 from flask_swagger_ui import get_swaggerui_blueprint
 from persistence.data_manager import DataManager
 import os
+port = os.getenv('PORT')
+
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -58,4 +60,4 @@ def serve_swagger():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=port)
