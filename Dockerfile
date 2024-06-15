@@ -1,38 +1,32 @@
 FROM python:3.11-alpine
 
-# Create a non-root user for the application
+# Create a non-root user to the application
 RUN adduser -D -s /bin/bash hbnb
 
-# Log in as root user
-USER root
-
-# Define the working directory for the application
+# Define a working directory for the application
 WORKDIR /home/hbnb/app
 
-# Copy the configuration files into the container
+# Copy the requirements file and install the dependencies
 COPY requirements.txt .
-COPY app /home/hbnb/app
-COPY data /home/hbnb/app/data 
-
-# Install dependencies of Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-#Define the environment variables and expose the port
-ENV PORT 8000
-EXPOSE 8000
+# Copy the app to the container
+COPY app /home/hbnb/app
 
-# Define permissions for the data directory
-RUN mkdir -p /home/hbnb/app/data \
-    && chown -R hbnb:hbnb /home/hbnb/app/data
+# Copy data files into the container with ownership set to hbnb user
+COPY --chown=hbnb:hbnb data/* /home/hbnb/app/data/
 
-# Log in as a non-root user
+# Set permissions for the data directory to allow read/write by owner and group
+RUN chmod -R 774 /home/hbnb/app/data
+
+# Switch to the non-root user for security reasons
 USER hbnb
 
-# Define the volume for the data directory
+# Define a volume for the data directory to persist data outside the container
 VOLUME ["/home/hbnb/app/data"]
 
-# Define working directory for running the application
+# Define working directory for the application
 WORKDIR /home/hbnb/app
 
-# Run the application with Gunicorn
+# Execute the application with gunicorn
 CMD ["python", "-m", "gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "app:app"]
