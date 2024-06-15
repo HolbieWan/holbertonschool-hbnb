@@ -56,7 +56,7 @@ app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 
 @app.route('/swagger.yaml')
 def serve_swagger():
-    return send_from_directory(os.getcwd(), 'swagger.yaml')
+    return send_from_directory(os.path.dirname(__file__), 'swagger.yaml')
 
 
 if __name__ == "__main__":
