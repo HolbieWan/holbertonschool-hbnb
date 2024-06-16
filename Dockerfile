@@ -1,6 +1,6 @@
 FROM python:3.11-alpine
 
-# Create a non-root user to the application
+# Create a non-root user for the application
 RUN adduser -D -s /bin/bash hbnb
 
 # Define a working directory for the application
@@ -17,13 +17,14 @@ COPY app /home/hbnb/app
 COPY --chown=hbnb:hbnb data/* /home/hbnb/app/data/
 
 # Set permissions for the data directory to allow read/write by owner and group
-RUN chmod -R 774 /home/hbnb/app/data
+RUN chmod -R 755 /home/hbnb/app/data
 
 # Switch to the non-root user for security reasons
 USER hbnb
 
 # Define a volume for the data directory to persist data outside the container
 VOLUME ["/home/hbnb/app/data"]
+
 
 # Define working directory for the application
 WORKDIR /home/hbnb/app
